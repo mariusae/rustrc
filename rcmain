@@ -32,6 +32,8 @@ if(flag i){
 				status=''
 			}
 		}
+		# plan 9's B: open files in the session this terminal is in
+		fn B { apex B $* }
 		apex awd
 	}
 	if not if(~ $termprog 9term || ~ $termprog win){
