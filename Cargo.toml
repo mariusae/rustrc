@@ -1,0 +1,25 @@
+[package]
+name = "rust-rc"
+version = "0.1.0"
+edition = "2021"
+description = "A faithful Rust port of the Plan 9 rc shell (plan9port flavour): an embeddable library and a drop-in `rc` binary"
+license = "MIT"
+keywords = ["shell", "plan9", "rc", "interpreter"]
+categories = ["command-line-utilities", "parser-implementations"]
+
+[lib]
+name = "rust_rc"
+path = "src/lib.rs"
+
+[[bin]]
+name = "rc"
+path = "src/bin/rc.rs"
+
+[dependencies]
+libc = "0.2"
+
+[profile.release]
+panic = "unwind"
+
+[profile.dev]
+panic = "unwind"

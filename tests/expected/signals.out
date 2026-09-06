@@ -1,0 +1,76 @@
+code=0
+code=0
+caught
+after
+code=0
+caught a b
+after
+code=0
+int
+after
+code=0
+code=0
+hup
+after
+code=0
+code=0
+alrm
+after
+code=0
+rc: note: sys: usr1
+code=1
+after
+code=0
+after
+code=0
+after
+code=0
+int 0
+int 1
+int 2
+after
+code=0
+code=0
+k
+after
+exit
+code=0
+int
+after
+code=0
+inbrace
+int
+after
+code=0
+rc: line 2: token ';': syntax error
+code=1
+rc: line 2: token ';': syntax error
+code=1
+rc: line 2: token '|': syntax error
+code=1
+rc: line 2: token '&': syntax error
+code=1
+% rc: /dev/stdin: syntax error
+% st=syntax error
+% code=0
+% rc: /dev/stdin: token '&': syntax error
+% % st=syntax error
+% code=0
+% % after
+% code=0
+code=0
+% % int
+% after
+% code=0
+rc: line 2: token ';': syntax error
+code=1
+apid=PID
+st=
+apid=PID
+1
+st=5
+hi
+hi
+st=
+caught
+code=7

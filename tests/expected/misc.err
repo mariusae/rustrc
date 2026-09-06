@@ -1,0 +1,28 @@
+rc: line 2: token '{': missing newline at end of line
+rc: line 2: token '{': missing newline at end of line
+rc: line 2: token '{': missing newline at end of line
+rc: line 2: token else: missing newline at end of line
+rc: line 3: token EOF: missing newline at end of line
+printf: missing format character
+printf: missing format character
+printf: missing format character
+printf: missing format character
+printf: missing format character
+cmd: No such file or directory
+rc: line 2: token '(': syntax error
+line3: No such file or directory
+foo: No such file or directory
+foo: No such file or directory
+c1.rc: rc: .: can't open: No such file or directory
+rest: No such file or directory
+rc: null list in concatenation
+rc: null list in concatenation
+rc: null list in concatenation
+a: not found
+xa: not found
+printf: missing format character
+printf: missing format character
+rc: line 2: token ';': syntax error
+rc: null list in concatenation
+script.rc: rc: .: can't open: No such file or directory
+nonexistent: rc: can't open: No such file or directory

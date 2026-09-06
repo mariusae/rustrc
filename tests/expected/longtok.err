@@ -1,0 +1,4 @@
+/Users/marius/src/rust-rc/tests/cases/longtok.sh: line 12: {printf: command not found
+wc: illegal option -- )
+usage: wc [-Lclmw] [file ...]
+rc: /dev/stdin:2: token '{': missing newline at end of line

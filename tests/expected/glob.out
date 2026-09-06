@@ -1,0 +1,75 @@
+.hidden a.c b.c bin c.h d e script.rc sp ace src.rc
+a.c b.c
+a.c b.c
+a.c b.c
+*.nomatch
+d/sub d/x.c d/y.h
+d/sub/z.c
+d/x.c
+.hidden
+d/../c.h
+b.c
+a.c b.c
+a.c b.c c.h
+d/x.c d/y.h
+"*"
+*
+\*
+a.c b.c
+a.c b.c
+a.c b.c
+bin/ d/ e/
+d/
+d/sub/z.c
+nomatch/*
+d/nomatch*
+*nomatch*
+sp ace
+a.c
+a.c
+a.c b.c bin c.h
+a.c b.c bin c.h
+a.c
+.hidden
+[]*
+.hidden a.c b.c bin c.h d e script.rc sp ace src.rc
+
+
+
+
+
+
+
+
+
+
+
+no match
+
+no match
+no match
+no match
+
+
+
+no match
+no match
+no match
+
+
+d/x.c d/y.h
+d/x.c d/y.h
+e/q
+sub x.c y.h
+../a.c ../b.c
+z.c
+../sub ../x.c ../y.h
+~/*.c
+/nonexistent/*
+./a.c ./b.c
+././d/x.c
+"*.c"
+*.cx
+file a.c
+file b.c
+no match

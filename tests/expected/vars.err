@@ -1,0 +1,37 @@
+rc: null list in concatenation
+Usage: shift [n]
+rc: line 2: token '(': syntax error
+rc: line 2: token ';': syntax error
+rc: line 2: token ';': syntax error
+shebang: No such file or directory
+rc: line 3: token EOF: missing newline at end of line
+rc: Usage: whatis name ...
+builtin: not found
+./script.rc: not found
+nonexec: not found
+": not found
+a b: not found
+a: not found
+b: not found
+rc: line 2: token ';': syntax error
+rc: variable name not singleton!
+rc: mismatched list lengths in concatenation
+rc: null list in concatenation
+src.rc: rc: .: can't open: No such file or directory
+src.rc: rc: .: can't open: No such file or directory
+script.rc: rc: .: can't open: No such file or directory
+script.rc: rc: .: can't open: No such file or directory
+% % % flag x
+echo ''
+flag x -
+rc: Usage: flag [letter] [+-]
+echo hi
+flag x -
+d/sub
+d/sub
+Can't cd nonexistent: No such file or directory
+Usage: cd [directory]
+Can't cd -- $home empty
+Can't cd /nonexistent: No such file or directory
+d/sub
+Can't cd e: No such file or directory

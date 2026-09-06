@@ -1,0 +1,29 @@
+echo": No such file or directory
+rc: Usage: eval cmd ...
+rc: line 2: token ';': syntax error
+rc: line 2: token ')': missing newline at end of line
+"echo: No such file or directory
+"echo: No such file or directory
+": No such file or directory
+nonexistent: No such file or directory
+rc: empty argument list
+rc: Usage: wait [pid]
+usage: umask [mode]
+usage: umask [mode]
+usage: umask [mode]
+rc: line 2: token '&': syntax error
+sed: 1: ""s/[0-9][0-9]*/N/"
+": invalid command code "
+setrlimit: Operation not permitted
+rc: rfork failed
+rc: rfork failed
+Usage: rfork [nNeEsfF]
+Usage: rfork [nNeEsfF]
+% nonexistent: No such file or directory
+/nonexistent: No such file or directory
+./nonexistent: No such file or directory
+script.rc: No such file or directory
+./script.rc: Permission denied
+./script.rc: Exec format error
+x: not found
+rc: Usage: . [-i] file [arg ...]

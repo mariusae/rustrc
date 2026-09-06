@@ -1,0 +1,63 @@
+rc: line 2: token ')': missing newline at end of line
+rc: line 3: token ')': missing newline at end of line
+rc: line 2: `if not' does not follow `if(...)'
+rc: line 2: `if not' does not follow `if(...)'
+rc: line 4: `if not' does not follow `if(...)'
+rc: line 2: case missing in switch
+rc: line 2: case missing in switch
+rc: line 2: case missing in switch
+rc: line 4: case missing in switch
+rc: line 3: token EOF: syntax error
+rc: line 2: token '}': missing newline at end of line
+rc: line 3: token EOF: syntax error
+rc: line 2: token '}': missing newline at end of line
+rc: line 2: syntax error
+rc: line 2: syntax error
+b: No such file or directory
+rc: line 2: token i: syntax error
+rc: line 2: syntax error
+rc: line 2: token x: syntax error
+rc: line 2: token true: syntax error
+rc: line 3: token EOF: syntax error
+rc: line 2: syntax error
+rc: line 2: syntax error
+rc: line 2: token '(': syntax error
+rc: line 2: token b: syntax error
+rc: line 2: token '(': syntax error
+rc: line 2: syntax error
+rc: line 2: syntax error
+rc: line 3: token EOF: syntax error
+rc: line 2: syntax error
+rc: line 2: syntax error
+rc: line 3: token EOF: missing newline at end of line
+rc: line 3: token EOF: missing newline at end of line
+rc: line 3: token EOF: missing newline at end of line
+rc: line 3: token EOF: missing newline at end of line
+rc: line 3: token EOF: missing newline at end of line
+rc: line 2: token ')': missing newline at end of line
+rc: mismatched list lengths in concatenation
+rc: mismatched list lengths in concatenation
+rc: null list in concatenation
+rc: variable name not singleton!
+rc: variable name not singleton!
+rc: variable name not singleton!
+rc: variable name not singleton!
+rc: variable name must be singleton
+
+rc: variable name not singleton!
+rc: variable name must be singleton
+
+rc: line 2: token ')': missing newline at end of line
+rc: /dev/stdin:3: token ')': missing newline at end of line
+s.rc: rc: .: can't open: No such file or directory
+s2.rc: rc: .: can't open: No such file or directory
+s3.rc: rc: .: can't open: No such file or directory
+s4.rc: rc: .: can't open: No such file or directory
+nonexistent.rc: rc: .: can't open: No such file or directory
+rc: mismatched list lengths in concatenation
+rc: line 2: `if not' does not follow `if(...)'
+rc: null list in concatenation
+rc: line 2: syntax error
+rc: line 2: syntax error
+rc: line 2: syntax error
+rc: line 2: syntax error

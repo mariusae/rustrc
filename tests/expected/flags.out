@@ -1,0 +1,330 @@
+code=1
+code=1
+code=1
+code=1
+a
+code=1
+code=1
+b
+code=0
+b
+code=0
+code=1
+b
+code=0
+code=1
+code=1
+b
+code=0
+code=1
+b
+code=0
+. RCMAIN
+flag p
+finit
+flag l
+eval 'echo a; x=1; echo $x; for(i in 1 2) echo $i; fn f {echo f $*}; f z; echo `{echo bq}; false; echo done'
+echo a
+a
+echo 1
+1
+echo 1
+1
+echo 2
+2
+f z
+echo f z
+f z
+echo bq
+echo bq
+bq
+false
+echo done
+done
+exit ''
+status='no match'
+status='no match'
+status='flag not set'
+status='flag not set'
+status='flag not set'
+a
+b
+code=3
+a
+b
+# rcmain: Plan 9 on Unix version
+if(~ $#home 0) home=$HOME
+if(~ $#home 0) home=/
+if(~ $#ifs 0) ifs=' 	
+'
+switch($#prompt){
+case 0
+	prompt=('% ' '	')
+case 1
+	prompt=($prompt '	')
+}
+if(~ $rcname ?.out ?.rc */?.rc */?.out) prompt=('broken! ' '	')
+if(flag p) path=(/bin /usr/bin)
+if not{
+	finit
+	# should be taken care of by rc now, but leave just in case
+}
+fn sigexit
+if(! ~ $#cflag 0){
+	if(flag l && test -r $home/lib/profile) . $home/lib/profile
+	status=''
+	eval $cflag
+	exit $status
+}
+echo a; echo b
+a
+b
+echo a
+a
+echo b
+b
+# rcmain: Plan 9 on Unix version
+if(~ $#home 0) home=$HOME
+if(~ $#home 0) home=/
+if(~ $#ifs 0) ifs=' 	
+'
+switch($#prompt){
+case 0
+	prompt=('% ' '	')
+case 1
+	prompt=($prompt '	')
+}
+if(~ $rcname ?.out ?.rc */?.rc */?.out) prompt=('broken! ' '	')
+if(flag p) path=(/bin /usr/bin)
+if not{
+	finit
+	# should be taken care of by rc now, but leave just in case
+}
+fn sigexit
+if(! ~ $#cflag 0){
+	if(flag l && test -r $home/lib/profile) . $home/lib/profile
+	status=''
+	eval $cflag
+	exit $status
+}
+if(flag i){
+	if(~ $termprog 9term || ~ $termprog win){
+		fn cd {
+			# builtin cd $1 && flag i && awd
+			# is not sufficient when running in a subshell
+			# that is rc -e (like mk uses!)
+			if(builtin cd $1){
+				if(flag i) $PLAN9/bin/9 awd || status=''
+				status=''
+			}
+		}
+		$PLAN9/bin/9 awd
+	}
+	if(flag l && test -r $home/lib/profile) . $home/lib/profile
+	status=''
+	if(! ~ $#* 0) . $*
+	. -i '/dev/stdin'
+	exit $status
+}
+if(flag l && test -r $home/lib/profile) . $home/lib/profile
+if(~ $#* 0){
+	. /dev/stdin
+	exit $status
+}
+echo a
+a
+echo b
+b
+v.rc: rc: .: can't open: No such file or directory
+# rcmain: Plan 9 on Unix version
+if(~ $#home 0) home=$HOME
+if(~ $#home 0) home=/
+if(~ $#ifs 0) ifs=' 	
+'
+switch($#prompt){
+case 0
+	prompt=('% ' '	')
+case 1
+	prompt=($prompt '	')
+}
+if(~ $rcname ?.out ?.rc */?.rc */?.out) prompt=('broken! ' '	')
+if(flag p) path=(/bin /usr/bin)
+if not{
+	finit
+	# should be taken care of by rc now, but leave just in case
+}
+fn sigexit
+if(! ~ $#cflag 0){
+	if(flag l && test -r $home/lib/profile) . $home/lib/profile
+	status=''
+	eval $cflag
+	exit $status
+}
+if(flag i){
+	if(~ $termprog 9term || ~ $termprog win){
+		fn cd {
+			# builtin cd $1 && flag i && awd
+			# is not sufficient when running in a subshell
+			# that is rc -e (like mk uses!)
+			if(builtin cd $1){
+				if(flag i) $PLAN9/bin/9 awd || status=''
+				status=''
+			}
+		}
+		$PLAN9/bin/9 awd
+	}
+	if(flag l && test -r $home/lib/profile) . $home/lib/profile
+	status=''
+	if(! ~ $#* 0) . $*
+	. -i '/dev/stdin'
+	exit $status
+}
+if(flag l && test -r $home/lib/profile) . $home/lib/profile
+if(~ $#* 0){
+	. /dev/stdin
+	exit $status
+}
+status=''
+. $*
+v.rc: rc: .: can't open: No such file or directory
+a
+% hi
+% % 1
+% code=0
+cmd
+code=0
+x.rc: rc: .: can't open: No such file or directory
+code=1
+% rc: /dev/stdin: token ')': missing newline at end of line
+% b
+% code=0
+% nonexistent: rc: can't open: No such file or directory
+% b
+% code=0
+% rc: mismatched list lengths in concatenation
+% b
+% code=0
+% hi
+onethere
+onecode=0
+% 	hi more
+onetwotwox
+onecode=0
+% hi
+% code=0
+% hi
+onecode=0
+% hi
+% code=0
+% code=3
+% % code=1
+status='no match'
+status='no match'
+status='flag not set'
+status='flag not set'
+status='flag not set'
+status=false
+status=false
+% hi
+% code=0
+status='no match'
+status='no match'
+status='flag not set'
+status='flag not set'
+status='flag not set'
+status=false
+status=false
+% status=1
+% code=1
+login
+code=0
+profile
+login
+nologin
+profile
+x
+profile
+% y
+% code=1
+code=1
+code=1
+/bin /usr/bin
+d
+7
+compile: <nil>
+compile: (if (paren (~ ($# home) (words <nil> 0))) (home=($ HOME) <nil>))
+compile: (if (paren (~ ($# home) (words <nil> 0))) (home=/ <nil>))
+compile: (if (paren (~ ($# ifs) (words <nil> 0))) (ifs=' 	
+' <nil>))
+compile: (switch (paren (words <nil> ($# prompt))) (brace (; (simple (arglist case 0)) (; (prompt=(paren (words (words <nil> '% ') '	')) <nil>) (; (simple (arglist case 1)) (prompt=(paren (words (words <nil> ($ prompt)) '	')) <nil>))))))
+compile: (if (paren (~ ($ rcname) (words (words (words (words <nil> ?.out) ?.rc) */?.rc) */?.out))) (prompt=(paren (words (words <nil> 'broken! ') '	')) <nil>))
+compile: (if (paren (simple (arglist flag p))) (path=(paren (words (words <nil> /bin) /usr/bin)) <nil>))
+compile: (if not (brace (simple finit)))
+compile: (fn (words <nil> sigexit) <nil>)
+compile: (if (paren (! (~ ($# cflag) (words <nil> 0)))) (brace (; (if (paren (&& (simple (arglist flag l)) (simple (arglist (arglist test -r) (^ ($ home) /lib/profile))))) (simple (arglist . (^ ($ home) /lib/profile)))) (; (status='' <nil>) (; (simple (arglist eval ($ cflag))) (simple (arglist exit ($ status))))))))
+compile: (; (&& (| (simple (arglist (arglist echo a) b)) (>[2=1] (simple (arglist c <nil>))) (! (simple d))) (; (for i (words <nil> x) (if (paren (~ ($ i) (words <nil> y))) (simple z))) (if not (simple w))))
+compile: <nil>
+compile: (if (paren (~ ($# home) (words <nil> 0))) (home=($ HOME) <nil>))
+compile: (if (paren (~ ($# home) (words <nil> 0))) (home=/ <nil>))
+compile: (if (paren (~ ($# ifs) (words <nil> 0))) (ifs=' 	
+' <nil>))
+compile: (switch (paren (words <nil> ($# prompt))) (brace (; (simple (arglist case 0)) (; (prompt=(paren (words (words <nil> '% ') '	')) <nil>) (; (simple (arglist case 1)) (prompt=(paren (words (words <nil> ($ prompt)) '	')) <nil>))))))
+compile: (if (paren (~ ($ rcname) (words (words (words (words <nil> ?.out) ?.rc) */?.rc) */?.out))) (prompt=(paren (words (words <nil> 'broken! ') '	')) <nil>))
+compile: (if (paren (simple (arglist flag p))) (path=(paren (words (words <nil> /bin) /usr/bin)) <nil>))
+compile: (if not (brace (simple finit)))
+compile: (fn (words <nil> sigexit) <nil>)
+compile: (if (paren (! (~ ($# cflag) (words <nil> 0)))) (brace (; (if (paren (&& (simple (arglist flag l)) (simple (arglist (arglist test -r) (^ ($ home) /lib/profile))))) (simple (arglist . (^ ($ home) /lib/profile)))) (; (status='' <nil>) (; (simple (arglist eval ($ cflag))) (simple (arglist exit ($ status))))))))
+compile: (; (x=y (simple a)) (; (fn (words <nil> f) (brace (; (simple b) (simple c)))) (; (switch (paren (words <nil> a)) (brace (; (simple (arglist case b)) (simple c)))) (; (simple (` <nil>)) (; (simple (<(brace (simple e)) <nil>)) (; (simple @f) (; (>h (brace (simple g))) (<<HERE (simple (arglist i <nil>))))))))))
+compile: <nil>
+compile: <nil>
+compile: (if (paren (~ ($# home) (words <nil> 0))) (home=($ HOME) <nil>))
+compile: (if (paren (~ ($# home) (words <nil> 0))) (home=/ <nil>))
+compile: (if (paren (~ ($# ifs) (words <nil> 0))) (ifs=' 	
+' <nil>))
+compile: (switch (paren (words <nil> ($# prompt))) (brace (; (simple (arglist case 0)) (; (prompt=(paren (words (words <nil> '% ') '	')) <nil>) (; (simple (arglist case 1)) (prompt=(paren (words (words <nil> ($ prompt)) '	')) <nil>))))))
+compile: (if (paren (~ ($ rcname) (words (words (words (words <nil> ?.out) ?.rc) */?.rc) */?.out))) (prompt=(paren (words (words <nil> 'broken! ') '	')) <nil>))
+compile: (if (paren (simple (arglist flag p))) (path=(paren (words (words <nil> /bin) /usr/bin)) <nil>))
+compile: (if not (brace (simple finit)))
+compile: (fn (words <nil> sigexit) <nil>)
+compile: (if (paren (! (~ ($# cflag) (words <nil> 0)))) (brace (; (if (paren (&& (simple (arglist flag l)) (simple (arglist (arglist test -r) (^ ($ home) /lib/profile))))) (simple (arglist . (^ ($ home) /lib/profile)))) (; (status='' <nil>) (; (simple (arglist eval ($ cflag))) (simple (arglist exit ($ status))))))))
+compile: (simple (arglist echo a))
+S
+code=1
+code=1
+code=1
+x
+code=0
+ec
+code=0
+attached
+code=0
+code=1
+ic
+code=0
+. RCMAIN
+flag p
+finit
+flag l
+eval 'echo xe'
+echo xe
+xe
+exit ''
+x
+code=0
+code=1
+after
+code=0
+code=1
+code=1
+echo traced
+traced
+exit ''
+
+code=1
+st=flag not set
+st=flag not set
+st=
+-flag i; echo st=$status; flag I; echo st=$status; flag c; echo st=$status; flag c -; echo -$cflag-; flag l; echo $status; flag p; echo $status-
+flag not set
+flag not set
+

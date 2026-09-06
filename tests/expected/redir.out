@@ -1,0 +1,53 @@
+hi
+hi
+more
+again
+err
+out
+       2
+echo script args: $*
+echo zero=$0
+a
+c
+hi
+       6
+ABC
+same
+hello /dev/fd/5
+done
+one
+out
+err
+a
+a
+first
+one
+two
+a
+b
+f5
+f6
+       2
+echo script args: $*
+echo zero=$0
+"
+a.c
+b.c
+bin
+c.h
+d
+e
+f1
+f2
+f3
+f4
+f5
+f6
+f7
+f8
+f9
+script.rc
+sp ace
+src.rc
+hi
+x

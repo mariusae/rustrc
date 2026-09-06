@@ -1,0 +1,243 @@
+inner x
+inner y
+fn g {echo inner $1}
+first
+second
+a
+st=1
+a.c
+b.c
+c.h
+.hidden
+a.c
+b.c
+bin
+c.h
+d
+e
+script.rc
+sp ace
+src.rc
+c-file
+star
+no
+other
+ab
+one-two
+hit
+star
+bq
+var
+code=0
+loop 1
+loop 2
+done 2
+0
+1
+2
+p0
+p1
+got
+got
+inner
+inner
+in f 1
+code=0
+rc: empty argument list
+3: No such file or directory
+st=
+st=
+st=
+1
+2
+3
+done
+b
+a
+
+st=
+st=
+st=3
+st=4|
+c
+st=1|
+st=1|
+after
+code=0
+code=1
+code=1
+a
+st=
+after
+code=0
+st=
+after
+code=0
+a
+st=
+echo: fflush: Bad file descriptor
+st=1
+b
+a
+x=2
+x=1
+x=1
+x=1
+2
+2
+2
+3
+e
+x y
+0
+2
+x y
+x y
+1
+0
+0 st=
+x
+1
+aa bb
+ab
+0y
+code=1
+
+code=1
+abc
+acd bce
+ace bdf
+code=1
+
+code=0
+code=1
+1
+
+
+code=1
+code=1
+a b
+
+0
+0
+a.c b.c a.c b.c
+a.c
+
+no match
+no match
+
+
+no match
+no match
+
+a.c
+a.c b.c
+c b a
+--
+x
+0
+a13 b24
+both
+neither
+neither
+t
+f
+
+defined
+a
+hi
+after
+code=0
+empty
+code=0
+empty
+code=0
+code=1
+code=1
+body
+code=1
+next-line
+a
+code=0
+after
+x
+x
+a
+b
+a
+a
+b
+a
+b
+code=1
+code=1
+a b c
+
+
+a b c
+a b c
+a b
+a
+st=
+st=
+fn f {}
+x
+fn f {echo x}
+st=
+code=0
+code=0
+ok
+code=0
+a
+b
+code=0
+2
+1
+1
+1
+WORK/d
+WORK/d/sub
+WORK/d
+WORK
+umask 000
+umask 000
+WORK/d
+WORK
+
+st=
+a
+
+a
+2
+2
+hi
+hithere
+a b c
+
+a/b/c
+
+a b
+1
+0000000    a       b  \n  \n                                            
+x y z
+
+x y z
+
+x ybz
+
+a 
+
+a b
+a b
+a b
+a c
+
+a*b
+
+a*b
+a.c
+b.c
+ac bd
+"a"
+"a "
+" a"

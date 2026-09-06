@@ -1,0 +1,19 @@
+nonexistent: rc: can't open: No such file or directory
+rc: line 2: token ';': syntax error
+rc: > requires singleton
+
+echo: fflush: Bad file descriptor
+nonexistent: rc: can't open: No such file or directory
+a
+rc: line 2: token '>[33': redirection syntax
+rc: line 2: token '>[33': missing newline at end of line
+rc: line 2: token '>[a': redirection syntax
+rc: line 2: token '>[a': missing newline at end of line
+rc: line 2: token '>[11=': redirection syntax
+rc: line 2: token '>[11=': missing newline at end of line
+rc: line 2: token '|[11=': pipe syntax
+rc: line 2: token '|[11=': missing newline at end of line
+x y
+x y
+rc: > requires singleton
+

@@ -1,0 +1,93 @@
+rc -c 'echo a )'; echo "code=$?"
+rc -c 'echo a
+echo b )
+echo c'; echo "code=$?"
+rc -c 'if not echo x'; echo "code=$?"
+rc -c 'if(true) echo a; echo b; if not echo c'; echo "code=$?"
+rc -c 'if(true) echo a
+if not echo b
+if not echo c'; echo "code=$?"
+rc -c 'switch(x){echo y}'; echo "code=$?"
+rc -c 'switch(x){}'; echo "code=$?"
+rc -c 'switch(x){case x}'; echo "code=$?"
+rc -c 'switch(x){
+case x
+}'; echo "code=$?"
+rc -c 'switch x {case x; echo matched}'; echo "code=$?"
+rc -c 'switch (x) {case x; echo matched}'; echo "code=$?"
+rc -c '{'; echo "code=$?"
+rc -c '}'; echo "code=$?"
+rc -c '{echo a'; echo "code=$?"
+rc -c 'echo a}'; echo "code=$?"
+rc -c '$'; echo "code=$?"
+rc -c 'echo $'; echo "code=$?"
+rc -c 'echo a & & b'; echo "code=$?"
+rc -c 'for i in a echo'; echo "code=$?"
+rc -c 'for(i in a'; echo "code=$?"
+rc -c 'for(i x) echo'; echo "code=$?"
+rc -c 'while true'; echo "code=$?"
+rc -c 'fn'; echo "code=$?"
+rc -c 'fn {'; echo "code=$?"
+rc -c '~'; echo "code=$?"
+rc -c 'echo (a'; echo "code=$?"
+rc -c 'echo a(b)'; echo "code=$?"
+rc -c 'echo (a)b'; echo "code=$?"
+rc -c 'echo (a)(b)'; echo "code=$?"
+rc -c 'echo a^(b)'; echo "code=$?"
+rc -c 'echo $x(1 2'; echo "code=$?"
+rc -c '`'; echo "code=$?"
+rc -c '`{'; echo "code=$?"
+rc -c 'echo `{echo a}x`{echo b}'; echo "code=$?"
+rc -c 'echo <'; echo "code=$?"
+rc -c 'echo >'; echo "code=$?"
+rc -c 'echo |'; echo "code=$?"
+rc -c '| echo'; echo "code=$?"
+rc -c 'echo ||'; echo "code=$?"
+rc -c 'echo && '; echo "code=$?"
+rc -c '&& echo'; echo "code=$?"
+rc -c 'echo a &&
+echo b'; echo "code=$?"
+rc -c 'echo a |
+echo b'; echo "code=$?"
+rc -c 'echo a ||
+echo b'; echo "code=$?"
+rc -c 'echo a
+| echo b'; echo "code=$?"
+rc -c 'x=(a b) y=c echo $x $y'; echo "code=$?"
+rc -c 'echo a b; ; echo c'; echo "code=$?"
+rc -c ';'; echo "code=$?"
+rc -c '&'; echo "code=$?"
+rc -c ''; echo "code=$?"
+rc -c '#just a comment'; echo "code=$?"
+rc -c 'echo a #comment; echo b'; echo "code=$?"
+rc -c 'echo \'; echo "code=$?"
+rc -c "echo 'unterminated"; echo "code=$?"
+rc -c 'echo a; )
+echo after'; echo "code=$?"
+rc -c 'echo (a b) ^ (c d e)'; echo "code=$?"
+rc -c 'echo (a b)^(c d e); echo after'; echo "code=$?"
+rc -c 'echo ()^a; echo after'; echo "code=$?"
+rc -c 'x=(a b); $x=1; echo after'; echo "code=$?"
+rc -c 'echo $(a b)'; echo "code=$?"
+rc -c 'x=(a b); echo $#$x'; echo "code=$?"
+rc -c 'x=(a b); echo $"$x'; echo "code=$?"
+rc -c 'x=(a b); echo $$x(1)'; echo "code=$?"
+rc -c 'x=(a b); for($x in 1) echo'; echo "code=$?"
+rc -c '(a b)=1; echo after'; echo "code=$?"
+rc -c 'x=1 (a b)=2 echo $x; echo after'; echo "code=$?"
+rc -c 'echo one; syntax ) error; echo three' ; echo "code=$?"
+printf 'echo one\necho two ) bad\necho three\n' | rc; echo "code=$?"
+printf 'echo one\necho two ) bad\necho three\n' > s.rc; rc s.rc; echo "code=$?"
+printf 'echo one\ncat < nonexistent\necho three\n' > s2.rc; rc s2.rc; echo "code=$?"
+printf 'echo one\n. nonexistent\necho three\n' > s3.rc; rc s3.rc; echo "code=$?"
+printf 'if not echo x\necho y\n' > s4.rc; rc s4.rc; echo "code=$?"
+rc nonexistent.rc; echo "code=$?"
+rc -c 'fn f {echo (a b)^(c d e); echo in-f-after}; f; echo after'; echo "code=$?"
+rc -c 'echo a; if not echo b'; echo "code=$?"
+rc -c 'if(false) echo a; if not; echo b'; echo "code=$?"
+rc -c 'echo a "b" c'
+rc -c 'echo a$b'
+rc -c 'echo $#'
+rc -c 'echo $"'
+rc -c 'echo x$'
+rc -c 'echo $x^$'

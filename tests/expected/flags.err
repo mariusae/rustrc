@@ -1,0 +1,19 @@
+Illegal flag -Z
+Usage: rc [-DSYsrdiIlxepvV] [-c arg] [-m command] [file [arg ...]]
+Flag -c: too few arguments
+Usage: rc [-DSYsrdiIlxepvV] [-c arg] [-m command] [file [arg ...]]
+c: No such file or directory
+Flag -i: set twice
+Usage: rc [-DSYsrdiIlxepvV] [-c arg] [-m command] [file [arg ...]]
+Flag -m: too few arguments
+Usage: rc [-DSYsrdiIlxepvV] [-c arg] [-m command] [file [arg ...]]
+mymain: rc: .: can't open: No such file or directory
+nonexistent: rc: .: can't open: No such file or directory
+Flag -c: set twice
+Usage: rc [-DSYsrdiIlxepvV] [-c arg] [-m command] [file [arg ...]]
+-: rc: .: can't open: No such file or directory
+Illegal flag --
+Usage: rc [-DSYsrdiIlxepvV] [-c arg] [-m command] [file [arg ...]]
+mymain: rc: .: can't open: No such file or directory
+script.rc: rc: .: can't open: No such file or directory
+nonexistent: rc: can't open: No such file or directory

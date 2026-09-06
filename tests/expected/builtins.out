@@ -1,0 +1,46 @@
+one
+replaced
+code=0
+after
+code=0
+code=1
+code=2
+st=
+st=
+st=3
+st=
+st=
+x=a
+x=(a b)
+x=(a b)
+umask 022
+umask 077
+ulimit -c 0
+ulimit -c 0
+st=
+st=rfork failed
+st=
+st=
+st=
+st=rfork failed
+st=rfork usage
+st=rfork usage
+st=
+0
+st=1
+st=1
+st=1
+code=0
+st=1
+st=1
+st=1
+shebang arg
+st=
+shebang q
+hi
+code=3
+trapped
+code=2
+ok
+builtin cd
+code=1
