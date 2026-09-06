@@ -23,7 +23,18 @@ if(! ~ $#cflag 0){
 	exit $status
 }
 if(flag i){
-	if(~ $termprog 9term || ~ $termprog win){
+	if(~ $TERM_PROGRAM apex){
+		# an apex terminal names its window after the directory, as
+		# acme's win does: awd on every cd
+		fn cd {
+			if(builtin cd $1){
+				if(flag i) apex awd || status=''
+				status=''
+			}
+		}
+		apex awd
+	}
+	if not if(~ $termprog 9term || ~ $termprog win){
 		fn cd {
 			# builtin cd $1 && flag i && awd
 			# is not sufficient when running in a subshell
