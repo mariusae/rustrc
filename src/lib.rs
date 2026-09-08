@@ -59,8 +59,9 @@ pub use shell::Shell;
 use shell::*;
 use word::{Word, Words};
 
-/// The `rcmain` startup script shipped with plan9port (Unix version).
-/// The `rc` binary runs it at startup unless `-m` names another file.
+/// The `rcmain` startup script: plan9port's Unix version, extended to read
+/// `$home/lib/rcrc` (after `$home/lib/profile` for login shells) on every
+/// startup.  The `rc` binary runs it unless `-m` names another file.
 pub const RCMAIN: &str = include_str!("../rcmain");
 
 /// The portion of `rcmain` that sets up variables and functions without
@@ -500,21 +501,16 @@ pub fn run_main(argv: &[Word]) -> i32 {
     let rcmain: Word = match sh.flag_arg(b'm') {
         Some(m) => m.clone(),
         None => {
+            // rust-rc always uses its own copy of rcmain (which also reads
+            // $home/lib/rcrc); -m selects another file.
             use std::os::unix::ffi::OsStrExt;
-            let mut p = std::env::var_os("PLAN9").map(|p| p.as_bytes().to_vec()).unwrap_or_default();
-            p.extend_from_slice(b"/rcmain");
-            if unix::access_exists(&p) {
-                p
-            } else {
-                // No plan9port installation: use the embedded copy.
-                let mut path = std::env::temp_dir();
-                path.push(format!("rcmain.{}", std::process::id()));
-                let name = path.as_os_str().as_bytes().to_vec();
-                if std::fs::write(&path, RCMAIN).is_ok() {
-                    sh.rcmain_path = name.clone();
-                }
-                name
+            let mut path = std::env::temp_dir();
+            path.push(format!("rcmain.{}", std::process::id()));
+            let name = path.as_os_str().as_bytes().to_vec();
+            if std::fs::write(&path, RCMAIN).is_ok() {
+                sh.rcmain_path = name.clone();
             }
+            name
         }
     };
     sh.init(true, true, true);

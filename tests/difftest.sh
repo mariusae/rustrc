@@ -24,7 +24,7 @@ normalize() {
 	    -e 's/^apid=[0-9][0-9]*$/apid=PID/' \
 	    -e 's/^pid=[0-9][0-9]*$/pid=PID/' \
 	    -e 's|/tmp/here[0-9a-f]*\.[0-9a-f]*|/tmp/hereXXXX.XXXX|g' \
-	    -e "s|$PLAN9/rcmain|RCMAIN|g" \
+	    -e 's|WORK/p9/rcmain|RCMAIN|g' \
 	    -e 's|[^ ]*/rcmain\.[0-9][0-9]*|RCMAIN|g'
 }
 
@@ -36,6 +36,9 @@ run_case() {
 	bindir=$work/bin
 	mkdir -p "$bindir" "$work/d" "$work/d/sub" "$work/e"
 	ln -s "$rc" "$bindir/rc"
+	# both shells run rust-rc's rcmain: the reference finds it via $PLAN9
+	mkdir -p "$work/p9"
+	cp "$root/rcmain" "$work/p9/rcmain"
 	# a fixed set of files for globbing tests
 	for f in a.c b.c c.h .hidden 'sp ace' d/x.c d/y.h d/sub/z.c e/q; do
 		: > "$work/$f"
@@ -47,15 +50,15 @@ run_case() {
 	name=$(basename "$case_" .sh)
 	(
 		cd "$work" || exit 99
-		env -i PATH="$bindir:/usr/bin:/bin" HOME="$work" PLAN9="$PLAN9" TMPDIR="$work" \
+		env -i PATH="$bindir:/usr/bin:/bin" HOME="$work" PLAN9="$work/p9" TMPDIR="$work" \
 			WORK="$work" CASES="$here/cases" \
 			"$here/timeout.pl" "${CASE_TIMEOUT:-120}" /bin/sh "$case_" >"$out/$name.out" 2>"$out/$name.err" </dev/null
 		echo $? > "$out/$name.code"
 	)
-	normalize < "$out/$name.out" > "$out/$name.out.n" && mv "$out/$name.out.n" "$out/$name.out"
-	normalize < "$out/$name.err" > "$out/$name.err.n" && mv "$out/$name.err.n" "$out/$name.err"
 	# the scratch directory name is nondeterministic
 	sed -i.bak -e "s|$realwork|WORK|g" -e "s|$work|WORK|g" "$out/$name.out" "$out/$name.err" && rm -f "$out/$name".*.bak
+	normalize < "$out/$name.out" > "$out/$name.out.n" && mv "$out/$name.out.n" "$out/$name.out"
+	normalize < "$out/$name.err" > "$out/$name.err.n" && mv "$out/$name.err.n" "$out/$name.err"
 	rm -rf "$work"
 }
 

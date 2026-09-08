@@ -23,6 +23,7 @@ code=0
 flag p
 finit
 flag l
+test -r WORK/lib/rcrc
 eval 'echo a; x=1; echo $x; for(i in 1 2) echo $i; fn f {echo f $*}; f z; echo `{echo bq}; false; echo done'
 echo a
 a
@@ -52,7 +53,7 @@ b
 code=3
 a
 b
-# rcmain: Plan 9 on Unix version
+# rcmain: Plan 9 on Unix version (rust-rc: also reads $home/lib/rcrc)
 if(~ $#home 0) home=$HOME
 if(~ $#home 0) home=/
 if(~ $#ifs 0) ifs=' 	
@@ -72,6 +73,7 @@ if not{
 fn sigexit
 if(! ~ $#cflag 0){
 	if(flag l && test -r $home/lib/profile) . $home/lib/profile
+	if(test -r $home/lib/rcrc) . $home/lib/rcrc
 	status=''
 	eval $cflag
 	exit $status
@@ -83,7 +85,7 @@ echo a
 a
 echo b
 b
-# rcmain: Plan 9 on Unix version
+# rcmain: Plan 9 on Unix version (rust-rc: also reads $home/lib/rcrc)
 if(~ $#home 0) home=$HOME
 if(~ $#home 0) home=/
 if(~ $#ifs 0) ifs=' 	
@@ -103,6 +105,7 @@ if not{
 fn sigexit
 if(! ~ $#cflag 0){
 	if(flag l && test -r $home/lib/profile) . $home/lib/profile
+	if(test -r $home/lib/rcrc) . $home/lib/rcrc
 	status=''
 	eval $cflag
 	exit $status
@@ -121,12 +124,14 @@ if(flag i){
 		$PLAN9/bin/9 awd
 	}
 	if(flag l && test -r $home/lib/profile) . $home/lib/profile
+	if(test -r $home/lib/rcrc) . $home/lib/rcrc
 	status=''
 	if(! ~ $#* 0) . $*
 	. -i '/dev/stdin'
 	exit $status
 }
 if(flag l && test -r $home/lib/profile) . $home/lib/profile
+if(test -r $home/lib/rcrc) . $home/lib/rcrc
 if(~ $#* 0){
 	. /dev/stdin
 	exit $status
@@ -136,7 +141,7 @@ a
 echo b
 b
 v.rc: rc: .: can't open: No such file or directory
-# rcmain: Plan 9 on Unix version
+# rcmain: Plan 9 on Unix version (rust-rc: also reads $home/lib/rcrc)
 if(~ $#home 0) home=$HOME
 if(~ $#home 0) home=/
 if(~ $#ifs 0) ifs=' 	
@@ -156,6 +161,7 @@ if not{
 fn sigexit
 if(! ~ $#cflag 0){
 	if(flag l && test -r $home/lib/profile) . $home/lib/profile
+	if(test -r $home/lib/rcrc) . $home/lib/rcrc
 	status=''
 	eval $cflag
 	exit $status
@@ -174,12 +180,14 @@ if(flag i){
 		$PLAN9/bin/9 awd
 	}
 	if(flag l && test -r $home/lib/profile) . $home/lib/profile
+	if(test -r $home/lib/rcrc) . $home/lib/rcrc
 	status=''
 	if(! ~ $#* 0) . $*
 	. -i '/dev/stdin'
 	exit $status
 }
 if(flag l && test -r $home/lib/profile) . $home/lib/profile
+if(test -r $home/lib/rcrc) . $home/lib/rcrc
 if(~ $#* 0){
 	. /dev/stdin
 	exit $status
@@ -245,12 +253,25 @@ profile
 x
 profile
 % y
+% rcrc 0
+c
+fromrc
+rcrc 0
+stdin
+rcrc 0
+script args: a
+zero=./script.rc
+profile
+rcrc 0
+login
+rcrc 0
+% i
 % code=1
 code=1
 code=1
 /bin /usr/bin
 d
-7
+8
 compile: <nil>
 compile: (if (paren (~ ($# home) (words <nil> 0))) (home=($ HOME) <nil>))
 compile: (if (paren (~ ($# home) (words <nil> 0))) (home=/ <nil>))
@@ -261,7 +282,7 @@ compile: (if (paren (~ ($ rcname) (words (words (words (words <nil> ?.out) ?.rc)
 compile: (if (paren (simple (arglist flag p))) (path=(paren (words (words <nil> /bin) /usr/bin)) <nil>))
 compile: (if not (brace (simple finit)))
 compile: (fn (words <nil> sigexit) <nil>)
-compile: (if (paren (! (~ ($# cflag) (words <nil> 0)))) (brace (; (if (paren (&& (simple (arglist flag l)) (simple (arglist (arglist test -r) (^ ($ home) /lib/profile))))) (simple (arglist . (^ ($ home) /lib/profile)))) (; (status='' <nil>) (; (simple (arglist eval ($ cflag))) (simple (arglist exit ($ status))))))))
+compile: (if (paren (! (~ ($# cflag) (words <nil> 0)))) (brace (; (if (paren (&& (simple (arglist flag l)) (simple (arglist (arglist test -r) (^ ($ home) /lib/profile))))) (simple (arglist . (^ ($ home) /lib/profile)))) (; (if (paren (simple (arglist (arglist test -r) (^ ($ home) /lib/rcrc)))) (simple (arglist . (^ ($ home) /lib/rcrc)))) (; (status='' <nil>) (; (simple (arglist eval ($ cflag))) (simple (arglist exit ($ status)))))))))
 compile: (; (&& (| (simple (arglist (arglist echo a) b)) (>[2=1] (simple (arglist c <nil>))) (! (simple d))) (; (for i (words <nil> x) (if (paren (~ ($ i) (words <nil> y))) (simple z))) (if not (simple w))))
 compile: <nil>
 compile: (if (paren (~ ($# home) (words <nil> 0))) (home=($ HOME) <nil>))
@@ -273,7 +294,7 @@ compile: (if (paren (~ ($ rcname) (words (words (words (words <nil> ?.out) ?.rc)
 compile: (if (paren (simple (arglist flag p))) (path=(paren (words (words <nil> /bin) /usr/bin)) <nil>))
 compile: (if not (brace (simple finit)))
 compile: (fn (words <nil> sigexit) <nil>)
-compile: (if (paren (! (~ ($# cflag) (words <nil> 0)))) (brace (; (if (paren (&& (simple (arglist flag l)) (simple (arglist (arglist test -r) (^ ($ home) /lib/profile))))) (simple (arglist . (^ ($ home) /lib/profile)))) (; (status='' <nil>) (; (simple (arglist eval ($ cflag))) (simple (arglist exit ($ status))))))))
+compile: (if (paren (! (~ ($# cflag) (words <nil> 0)))) (brace (; (if (paren (&& (simple (arglist flag l)) (simple (arglist (arglist test -r) (^ ($ home) /lib/profile))))) (simple (arglist . (^ ($ home) /lib/profile)))) (; (if (paren (simple (arglist (arglist test -r) (^ ($ home) /lib/rcrc)))) (simple (arglist . (^ ($ home) /lib/rcrc)))) (; (status='' <nil>) (; (simple (arglist eval ($ cflag))) (simple (arglist exit ($ status)))))))))
 compile: (; (x=y (simple a)) (; (fn (words <nil> f) (brace (; (simple b) (simple c)))) (; (switch (paren (words <nil> a)) (brace (; (simple (arglist case b)) (simple c)))) (; (simple (` <nil>)) (; (simple (<(brace (simple e)) <nil>)) (; (simple @f) (; (>h (brace (simple g))) (<<HERE (simple (arglist i <nil>))))))))))
 compile: <nil>
 compile: <nil>
@@ -286,7 +307,7 @@ compile: (if (paren (~ ($ rcname) (words (words (words (words <nil> ?.out) ?.rc)
 compile: (if (paren (simple (arglist flag p))) (path=(paren (words (words <nil> /bin) /usr/bin)) <nil>))
 compile: (if not (brace (simple finit)))
 compile: (fn (words <nil> sigexit) <nil>)
-compile: (if (paren (! (~ ($# cflag) (words <nil> 0)))) (brace (; (if (paren (&& (simple (arglist flag l)) (simple (arglist (arglist test -r) (^ ($ home) /lib/profile))))) (simple (arglist . (^ ($ home) /lib/profile)))) (; (status='' <nil>) (; (simple (arglist eval ($ cflag))) (simple (arglist exit ($ status))))))))
+compile: (if (paren (! (~ ($# cflag) (words <nil> 0)))) (brace (; (if (paren (&& (simple (arglist flag l)) (simple (arglist (arglist test -r) (^ ($ home) /lib/profile))))) (simple (arglist . (^ ($ home) /lib/profile)))) (; (if (paren (simple (arglist (arglist test -r) (^ ($ home) /lib/rcrc)))) (simple (arglist . (^ ($ home) /lib/rcrc)))) (; (status='' <nil>) (; (simple (arglist eval ($ cflag))) (simple (arglist exit ($ status)))))))))
 compile: (simple (arglist echo a))
 S
 code=1
@@ -305,6 +326,7 @@ code=0
 flag p
 finit
 flag l
+test -r WORK/lib/rcrc
 eval 'echo xe'
 echo xe
 xe

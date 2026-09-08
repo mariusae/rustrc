@@ -5,6 +5,7 @@ Usage: rc [-DSYsrdiIlxepvV] [-c arg] [-m command] [file [arg ...]]
 c: No such file or directory
 Flag -i: set twice
 Usage: rc [-DSYsrdiIlxepvV] [-c arg] [-m command] [file [arg ...]]
+mymain: rc: .: can't open: No such file or directory
 Flag -m: too few arguments
 Usage: rc [-DSYsrdiIlxepvV] [-c arg] [-m command] [file [arg ...]]
 mymain: rc: .: can't open: No such file or directory

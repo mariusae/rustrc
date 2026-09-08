@@ -15,6 +15,7 @@ bin
 c.h
 d
 e
+p9
 script.rc
 sp ace
 src.rc
@@ -60,7 +61,7 @@ st=
 st=3
 st=4|
 c
-st=1|
+st=|
 st=1|
 after
 code=0

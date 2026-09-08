@@ -20,10 +20,11 @@ cargo install --path .
 rc -c 'for(i in a b c) echo $i'
 ```
 
-At startup `rc` runs `$PLAN9/rcmain` (or the file named with `-m`), exactly
-like plan9port's.  When no plan9port installation is present (no
-`$PLAN9/rcmain`), the copy of `rcmain` embedded in the crate is used, so the
-binary works standalone.
+At startup `rc` runs its embedded copy of plan9port's `rcmain` (or the file
+named with `-m`), so the binary works without a plan9port installation.  The
+one addition to `rcmain` is that `$home/lib/rcrc` is read at every startup —
+login or not, interactive or not, including `rc -c` and scripts — after
+`$home/lib/profile`, which login shells (`-l`) still read first.
 
 ## The library
 
@@ -47,7 +48,8 @@ match sh.eval("exit 3") {
 
 `Shell::new()` initialises the shell the way the `rc` binary does (imports
 the environment, sets `$pid`, `$path`/`$PATH`, `$home`, `$ifs`, `$prompt`,
-reads `fn#` function definitions from the environment) but reads no commands.
+reads `fn#` function definitions from the environment) but reads no commands
+and no `rcrc`; evaluate `. $home/lib/rcrc` yourself if you want it.
 `Shell::builder()` lets you turn off the signal handlers, the environment
 import, the `$PLAN9` setting, or the startup prelude, and set command line
 flags such as `-e` or `-x`.
@@ -76,8 +78,8 @@ Known deliberate differences:
 * When a trap function is defined and its signal arrives while rc is blocked
   reading input, the C implementation crashes; this port runs the function
   once the read completes.
-* When `$PLAN9/rcmain` does not exist, the embedded copy is used instead of
-  failing.
+* `rcmain` is always the embedded copy (`-m` overrides it) and additionally
+  reads `$home/lib/rcrc` at every startup.
 
 ## Tests
 

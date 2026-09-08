@@ -38,6 +38,7 @@ printf 'echo hi\n' | rc -i -s 2>&1; echo "code=$?"
 printf 'false\n' | rc -i -s 2>&1; echo "code=$?"
 rc -l -c 'echo login' 2>&1; echo "code=$?"
 mkdir -p lib; echo 'echo profile' > lib/profile; rc -l -c 'echo login'; rc -c 'echo nologin'; echo 'echo x' | rc -l; echo 'echo y' | rc -l -i 2>&1
+echo 'echo rcrc $#*; fn fromrc {echo fromrc}' > lib/rcrc; rc -c 'echo c; fromrc'; echo 'echo stdin' | rc; rc ./script.rc a; rc -l -c 'echo login'; echo 'echo i' | rc -i 2>&1; rc -m mymain; rm lib/profile lib/rcrc
 rc -m; echo "code=$?"
 echo 'echo custom rcmain $*; echo $#*' > mymain; rc -m mymain a b; echo "code=$?"
 rc -m nonexistent -c 'echo x'; echo "code=$?"

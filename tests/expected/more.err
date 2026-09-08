@@ -4,7 +4,6 @@ src.rc: rc: .: can't open: No such file or directory
 rc: line 2: token '&': syntax error
 rc: empty argument list
 rc: null list in concatenation
-PID: signal: sys: write on closed pipe
 nonexistent: rc: can't open: No such file or directory
 nonexistent: rc: can't open: No such file or directory
 nonexistent/x: rc: can't open: No such file or directory

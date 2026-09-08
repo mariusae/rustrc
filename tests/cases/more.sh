@@ -27,9 +27,9 @@ rc -c 'for(i in 1 2 3) {sleep 0.0$i; echo $i} & wait; echo done'
 rc -c '{sleep 0.1; echo a} & {echo b} & wait; echo $status'
 rc -c 'sleep 0.1 & apid1=$apid; sleep 0.2 & wait $apid1; echo st=$status; wait; echo st=$status'
 rc -c 'exit 3 & wait $apid; echo st=$status'
-rc -c 'echo a | {exit 4}; echo st=$status'
+rc -c 'echo a | {cat >/dev/null; exit 4}; echo st=$status'
 rc -c '{exit 4} | cat; echo st=$status'
-rc -c 'echo a | echo b | echo c; echo st=$status'
+rc -c 'echo a | {cat >/dev/null; echo b} | {cat >/dev/null; echo c}; echo st=$status'
 rc -c 'cat < nonexistent | cat; echo st=$status; echo after'; echo "code=$?"
 rc -c 'cat | cat < nonexistent; echo st=$status; echo after'; echo "code=$?"
 rc -c 'echo a | cat > nonexistent/x; echo st=$status; echo after'; echo "code=$?"
