@@ -22,9 +22,9 @@ rc -c 'for(i in a b c) echo $i'
 
 At startup `rc` runs its embedded copy of plan9port's `rcmain` (or the file
 named with `-m`), so the binary works without a plan9port installation.  The
-one addition to `rcmain` is that `$home/lib/rcrc` is read at every startup —
-login or not, interactive or not, including `rc -c` and scripts — after
-`$home/lib/profile`, which login shells (`-l`) still read first.
+one addition to `rcmain` is that interactive shells read `$home/lib/rcrc`
+(login or not) after `$home/lib/profile`, which login shells (`-l`) still
+read first, like other shells' rc files.
 
 ## The library
 
@@ -79,7 +79,7 @@ Known deliberate differences:
   reading input, the C implementation crashes; this port runs the function
   once the read completes.
 * `rcmain` is always the embedded copy (`-m` overrides it) and additionally
-  reads `$home/lib/rcrc` at every startup.
+  reads `$home/lib/rcrc` in interactive shells.
 
 ## Tests
 

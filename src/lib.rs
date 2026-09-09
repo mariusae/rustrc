@@ -59,9 +59,9 @@ pub use shell::Shell;
 use shell::*;
 use word::{Word, Words};
 
-/// The `rcmain` startup script: plan9port's Unix version, extended to read
-/// `$home/lib/rcrc` (after `$home/lib/profile` for login shells) on every
-/// startup.  The `rc` binary runs it unless `-m` names another file.
+/// The `rcmain` startup script: plan9port's Unix version, extended so that
+/// interactive shells read `$home/lib/rcrc` (after `$home/lib/profile` for
+/// login shells).  The `rc` binary runs it unless `-m` names another file.
 pub const RCMAIN: &str = include_str!("../rcmain");
 
 /// The portion of `rcmain` that sets up variables and functions without
