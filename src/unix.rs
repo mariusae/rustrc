@@ -396,7 +396,7 @@ impl Shell {
 
     fn fork(&mut self) -> i32 {
         self.err.flush();
-        unsafe { libc::fork() }
+        crate::trap::fork_held()
     }
 
     /// `Xasync`
