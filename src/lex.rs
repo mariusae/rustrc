@@ -69,6 +69,12 @@ impl Shell {
                 fb.rchr_with(|fd, buf| self.read(fd, buf))
             }
         };
+        // an interactive command being read: its text, for `fn preexec`
+        if c != EOF {
+            if let Some(t) = self.cmdtext.as_mut() {
+                t.push(c as u8);
+            }
+        }
         c
     }
 

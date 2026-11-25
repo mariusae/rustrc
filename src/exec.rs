@@ -49,10 +49,14 @@ impl Shell {
     /// The interpreter loop of `main`.  Returns when there is no thread
     /// left to run (only possible for an embedded shell).
     pub(crate) fn run_loop(&mut self) {
-        loop {
-            if self.runq.is_none() {
-                return;
-            }
+        while self.runq.is_some() {
+            self.step();
+        }
+    }
+
+    /// One instruction of the thread on top, and any traps it let in.
+    fn step(&mut self) {
+        {
             if self.flag_set(b'r') {
                 self.pfnc();
             }
@@ -665,6 +669,9 @@ impl Shell {
             self.err.flush();
         }
         if self.qref().iflag {
+            // `fn prompt`, before each command's first prompt
+            self.run_hook(b"prompt", Words::new());
+            self.cmdtext = Some(Vec::new());
             let prompt = self.vlook(b"prompt").borrow().val.front().cloned();
             self.promptstr = match prompt {
                 Some(p) => p,
@@ -672,7 +679,9 @@ impl Shell {
             };
         }
         crate::unix::noerror();
-        if self.parse() {
+        let parsed = self.parse();
+        let text = self.cmdtext.take();
+        if parsed {
             let (iflag, eof) = {
                 let q = self.qref();
                 (q.iflag, q.eof)
@@ -697,9 +706,35 @@ impl Shell {
             crate::trap::clear_traps_without_handlers(self);
             self.q().pc -= 1; // re-execute Xrdcmds after codebuf runs
             let code = self.take_codebuf();
+            // `fn preexec`, with the command's lines, before it runs
+            // (not for a line with only a comment on it: nothing runs)
+            let said = |l: &&[u8]| l.iter().find(|c| !c.is_ascii_whitespace()).is_some_and(|&c| c != b'#');
+            if let Some(text) = text.filter(|t| t.split(|&c| c == b'\n').any(|l| said(&l))) {
+                let lines: Words = text.split(|&c| c == b'\n').filter(|l| !l.is_empty()).map(<[u8]>::to_vec).collect();
+                self.run_hook(b"preexec", lines);
+            }
             let local = self.qref().local.clone();
             self.start(code, 1, local);
         }
+    }
+
+    /// Run function `name`, if there is one, with `args` as `$*`, to its
+    /// end before going on (a hook: `fn prompt`, `fn preexec`), and leave
+    /// `$status` as it was. An error or an interrupt in it ends it alone.
+    fn run_hook(&mut self, name: &[u8], args: Words) {
+        let Some((code, pc)) = self.vlook(name).borrow().func.clone() else { return };
+        let status = self.vlook(b"status").borrow().val.clone();
+        // stacked on this thread, and run till it is back on top (the
+        // box moves into the hook's `ret` and back, its place the same):
+        // an error or an interrupt in it unwinds to this, interactive,
+        // thread as anywhere else
+        let base = self.runq.as_deref().map(|t| t as *const Thread);
+        self.start(code, pc, None);
+        self.push_local(b"*".to_vec(), args);
+        while self.runq.is_some() && self.runq.as_deref().map(|t| t as *const Thread) != base {
+            self.step();
+        }
+        self.setvar(b"status", status);
     }
 
     fn error_prefix(&mut self) {

@@ -272,6 +272,10 @@ pub struct Shell {
     pub(crate) rdcmds_code: Code,
     pub(crate) dotcmds_code: Code,
     pub(crate) rdfns_code: Code,
+
+    // hooks (not in plan9port's rc): what an interactive command's
+    // reading has read, for `fn preexec`
+    pub(crate) cmdtext: Option<Vec<u8>>,
 }
 
 impl Shell {

@@ -80,6 +80,17 @@ Known deliberate differences:
   once the read completes.
 * `rcmain` is always the embedded copy (`-m` overrides it) and additionally
   reads `$home/lib/rcrc` in interactive shells.
+* Two hooks, as other shells have them, for interactive shells only:
+  `fn prompt` runs before each command's first prompt (not before the
+  continuation prompt), as in Byron Rakitzis's rc; `fn preexec` runs once a
+  command has been read, before it runs, with the command's lines as `$*`
+  (exactly as typed, comments and all; not for a blank or comment-only
+  line). Each runs to its end, `$status` left as it was; an error or an
+  interrupt in one ends the hook alone. Undefined, nothing changes. In an
+  apex terminal (`TERM_PROGRAM=apex`) `rcmain` defines both to mark the
+  prompts as zsh's and bash's integrations do (OSC 133: `A` a prompt, `C`
+  a command with `cmdline=` its lines joined by spaces, `D` its status
+  after, as a number).
 
 ## Tests
 

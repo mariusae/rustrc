@@ -275,6 +275,7 @@ impl Shell {
             envp: 0,
             wdirfd: -2,
             dot_first: true,
+            cmdtext: None,
             rcmain_path: Vec::new(),
             rdcmds_code,
             dotcmds_code,

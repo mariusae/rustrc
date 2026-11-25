@@ -34,6 +34,31 @@ if(flag i){
 		}
 		# plan 9's B: open files in the session this terminal is in
 		fn B { apex B $* }
+		# prompt marks (OSC 133), as apex's shell integration has them
+		# for zsh and bash: a command's end and its status before the
+		# next prompt, each prompt's start, and what is run as it is
+		# (its lines one); the terminal's ⌘↑ ⌘↓, its outline, and a
+		# win's commands go by them
+		fn prompt {
+			apexst=$status {
+				if(~ $#apexran 1){
+					apexran=()
+					switch($apexst){
+					case '' 0 '0|0' '0|0|0'
+						/usr/bin/printf '\033]133;D;0\007'
+					case [0-9] [0-9][0-9] [0-9][0-9][0-9]
+						/usr/bin/printf '\033]133;D;%s\007' $apexst
+					case *
+						/usr/bin/printf '\033]133;D;1\007'
+					}
+				}
+				/usr/bin/printf '\033]133;A\007'
+			}
+		}
+		fn preexec {
+			apexran=1
+			/usr/bin/printf '\033]133;C;cmdline=%s\007' $"*
+		}
 		apex awd
 	}
 	if not if(~ $termprog 9term || ~ $termprog win){
