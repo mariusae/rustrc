@@ -26,6 +26,13 @@ const SYSSIGNAME: [&str; 8] = [
     "term",
 ];
 
+/// The signal each trap is noted for, by trap number (`SIGNAME`); 0
+/// for those no signal makes.
+const TRAPSIG: [i32; 8] = [0, libc::SIGHUP, libc::SIGINT, libc::SIGQUIT, libc::SIGALRM, libc::SIGTERM, libc::SIGFPE, 0];
+
+/// Whether `trapinit` put rc's handlers in place.
+static INSTALLED: AtomicBool = AtomicBool::new(false);
+
 pub fn ntrap() -> i32 {
     NTRAP.load(Ordering::SeqCst)
 }
@@ -222,6 +229,7 @@ extern "C" fn signonotify(_sig: libc::c_int) {}
 /// `Trapinit` (lib9's `notify`): install the signal handlers.  Signals
 /// that already have a non-default disposition are left alone.
 pub fn trapinit() {
+    INSTALLED.store(true, Ordering::SeqCst);
     for &(sig, flags) in SIGS {
         unsafe {
             let mut old: libc::sigaction = std::mem::zeroed();
@@ -246,7 +254,129 @@ pub fn trapinit() {
     }
 }
 
+/// Whether rc's own handler takes `sig`.
+fn handled(sig: i32) -> bool {
+    // SAFETY: sigaction with no new action only reads the disposition
+    let old = unsafe {
+        let mut old: libc::sigaction = std::mem::zeroed();
+        libc::sigaction(sig, std::ptr::null(), &mut old);
+        old.sa_sigaction
+    };
+    old == signotify as extern "C" fn(libc::c_int) as libc::sighandler_t || old == signonotify as extern "C" fn(libc::c_int) as libc::sighandler_t
+}
+
+/// The signals a process group is sent to end or interrupt what runs
+/// in it, which a child must not miss for having been made while they
+/// came.
+const GROUP_SIGNALS: [i32; 4] = [libc::SIGHUP, libc::SIGINT, libc::SIGQUIT, libc::SIGTERM];
+
+/// `fork`, with no signal to the process group lost to the child.
+///
+/// A signal sent to the group while rc is in `fork` may reach rc and
+/// not the child, which was not yet there to be sent it (Linux restarts
+/// such a fork; macOS does not): rc notes it and waits, as it does, for
+/// the child, which goes on unaware -- a SIGTERM to the group, Kill's,
+/// left the command running. So the signals are held across the fork,
+/// and the child holds them until rc has passed on any of the group's
+/// that came meanwhile; one that reached the child as well is pending
+/// in it once, not twice, and it acts when the child lets go.
+pub(crate) fn fork_held() -> i32 {
+    // SAFETY: signal-mask, pipe and fork calls; the child makes only
+    // async-signal-safe ones before it returns
+    unsafe {
+        let mut all: libc::sigset_t = std::mem::zeroed();
+        libc::sigfillset(&mut all);
+        let mut old: libc::sigset_t = std::mem::zeroed();
+        libc::pthread_sigmask(libc::SIG_BLOCK, &all, &mut old);
+        let mut go = [-1; 2];
+        if libc::pipe(go.as_mut_ptr()) < 0 {
+            go = [-1; 2];
+        }
+        let pid = libc::fork();
+        if pid == 0 {
+            if go[1] >= 0 {
+                libc::close(go[1]);
+                let mut b = 0u8;
+                while libc::read(go[0], &mut b as *mut u8 as *mut libc::c_void, 1) < 0 && crate::unix::errno() == libc::EINTR {}
+                libc::close(go[0]);
+            }
+            libc::pthread_sigmask(libc::SIG_SETMASK, &old, std::ptr::null_mut());
+            return 0;
+        }
+        if pid > 0 {
+            let mut pending: libc::sigset_t = std::mem::zeroed();
+            libc::sigpending(&mut pending);
+            for sig in GROUP_SIGNALS {
+                if libc::sigismember(&pending, sig) == 1 && libc::sigismember(&old, sig) == 0 {
+                    libc::kill(pid, sig);
+                }
+            }
+        }
+        if go[1] >= 0 {
+            libc::close(go[0]);
+            libc::close(go[1]);
+        }
+        libc::pthread_sigmask(libc::SIG_SETMASK, &old, std::ptr::null_mut());
+        pid
+    }
+}
+
 impl Shell {
+    /// Before an exec: the signals as the program rc becomes is to find
+    /// them, at their defaults, as the exec would leave them -- but now,
+    /// so that none is lost on the way. rc's handler only notes a
+    /// signal, for a trap the interpreter runs after the instruction in
+    /// hand; one that came during the instruction that execs would be
+    /// noted for a trap that never runs, and the program, started all
+    /// the same, would never see it: a SIGTERM to the process group
+    /// just as rc started a command left the command running.
+    ///
+    /// With the signals held, rc's handlers give way to the defaults;
+    /// a trap noted meanwhile that no function of the user's takes is
+    /// raised again, and let go it acts as it would on the program,
+    /// ending rc. One a function takes is left as it was, since the
+    /// function cannot run here. `retrap` undoes this when the exec
+    /// fails.
+    pub(crate) fn untrap(&mut self) {
+        if !INSTALLED.load(Ordering::SeqCst) {
+            return;
+        }
+        let mut taken = [false; TRAPSIG.len()];
+        for (i, t) in taken.iter_mut().enumerate() {
+            *t = self.vlook(SIGNAME[i].as_bytes()).borrow().func.is_some();
+        }
+        // SAFETY: signal-mask and disposition calls, rc being one thread
+        unsafe {
+            let mut all: libc::sigset_t = std::mem::zeroed();
+            libc::sigfillset(&mut all);
+            let mut old: libc::sigset_t = std::mem::zeroed();
+            libc::pthread_sigmask(libc::SIG_BLOCK, &all, &mut old);
+            for &(sig, _) in SIGS {
+                if handled(sig) {
+                    libc::signal(sig, libc::SIG_DFL);
+                }
+            }
+            for (i, &sig) in TRAPSIG.iter().enumerate() {
+                if sig != 0 && !taken[i] {
+                    let n = TRAP[i].swap(0, Ordering::SeqCst);
+                    if n != 0 {
+                        NTRAP.fetch_sub(n, Ordering::SeqCst);
+                        libc::raise(sig);
+                    }
+                }
+            }
+            libc::pthread_sigmask(libc::SIG_SETMASK, &old, std::ptr::null_mut());
+        }
+    }
+
+    /// After an exec that failed: rc's handlers again, as `untrap`
+    /// found them.
+    pub(crate) fn retrap(&mut self) {
+        if INSTALLED.load(Ordering::SeqCst) {
+            trapinit();
+        }
+    }
+
     /// `dotrap`: run the pending traps.  When `allow_fn` is false (the
     /// interpreter is in the middle of reading input) traps that would run
     /// a user-defined function are left pending until the main loop, since

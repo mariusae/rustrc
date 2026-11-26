@@ -149,7 +149,9 @@ impl Shell {
         Shell::doredir(&redir);
         let args = self.top_ref().clone();
         let path = self.searchpath(&args[0]);
+        self.untrap();
         self.execute(&args, &path);
+        self.retrap();
         self.poplist();
     }
 

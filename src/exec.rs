@@ -702,8 +702,14 @@ impl Shell {
                 self.q().pc -= 1; // go back for next command
             }
         } else {
-            // avoid double-interrupts during blocked writes
-            crate::trap::clear_traps_without_handlers(self);
+            // avoid double-interrupts during blocked writes: at a prompt,
+            // where an interrupt has already done its work by interrupting
+            // the read. Elsewhere -- a script, -c, rcmain -- a signal that
+            // came while the command was read is still to be acted on:
+            // cleared, a SIGTERM as rc started was lost, and rc ran on.
+            if self.qref().iflag {
+                crate::trap::clear_traps_without_handlers(self);
+            }
             self.q().pc -= 1; // re-execute Xrdcmds after codebuf runs
             let code = self.take_codebuf();
             // `fn preexec`, with the command's lines, before it runs
